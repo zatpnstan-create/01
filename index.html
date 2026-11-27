@@ -1,284 +1,229 @@
-<html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>14 監獄 · CS 1.6 監獄伺服器</title>
-<style type="text/css">
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  html, body {
-    background-color: #0d1015;
-    color: #d8dee9;
-    font-family: "SimHei", "黑體", "Microsoft JhengHei", sans-serif;
-    font-size: 14px;
+<meta charset="UTF-8">
+<title>14 監獄 監獄伺服器</title>
+<style>
+  body {
+    background-color: #121417;
+    color: #e2e8f0;
+    font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
     line-height: 1.6;
-    overflow-y: auto;
+    margin: 0;
+    padding: 20px;
   }
-  .wrapper {
-    max-width: 820px;
+  .container {
+    max-width: 860px;
     margin: 0 auto;
-    padding: 15px 18px 30px 18px;
+    background-color: #1a1e24;
+    border: 1px solid #2d3540;
+    border-radius: 6px;
+    padding: 24px;
   }
-  /* 頂部主視覺與橫幅 */
-  .header-box {
-    background-color: #161b24;
-    border: 1px solid #2e3748;
-    border-top: 3px solid #f5b041;
-    padding: 14px;
+  .banner {
     text-align: center;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
-  .header-box img {
+  .banner img {
     max-width: 100%;
     height: auto;
-    display: block;
-    margin: 0 auto 10px auto;
-    border: 1px solid #252c38;
+    border-radius: 4px;
   }
-  .server-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #f5b041;
-    letter-spacing: 3px;
-  }
-  .server-sub {
-    font-size: 13px;
-    color: #8b95a5;
-    margin-top: 4px;
-  }
-  .motto-bar {
-    background-color: #231f16;
-    border: 1px solid #d4942a;
-    color: #ffd166;
-    font-size: 16px;
-    font-weight: bold;
+  h1 {
     text-align: center;
-    padding: 9px;
-    margin-bottom: 14px;
-    letter-spacing: 1.5px;
+    color: #f59e0b;
+    margin: 8px 0 4px;
+    font-size: 28px;
+    letter-spacing: 2px;
   }
-  /* 區塊卡片設計 */
-  .card {
-    background-color: #151922;
-    border: 1px solid #28303e;
-    margin-bottom: 14px;
+  .subtitle {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 14px;
+    margin-bottom: 12px;
   }
-  .card-header {
-    padding: 8px 14px;
-    font-size: 16px;
+  .motto {
+    text-align: center;
+    background-color: #232931;
+    color: #fbbf24;
+    padding: 8px;
+    border-radius: 4px;
     font-weight: bold;
-    border-bottom: 1px solid #28303e;
-    background-color: #1c222e;
-    letter-spacing: 1px;
+    margin-bottom: 24px;
+    border: 1px solid #374151;
   }
-  .card-body {
-    padding: 12px 16px;
+  h2 {
+    color: #38bdf8;
+    font-size: 18px;
+    border-left: 4px solid #f59e0b;
+    padding-left: 10px;
+    margin-top: 28px;
+    margin-bottom: 12px;
+    background-color: #20252d;
+    padding-top: 6px;
+    padding-bottom: 6px;
   }
-  /* 各陣營主題色條 */
-  .border-ban { border-left: 4px solid #e74c3c; }
-  .title-ban { color: #ff6b6b; }
-
-  .border-prisoner { border-left: 4px solid #f39c12; }
-  .title-prisoner { color: #f5b041; }
-
-  .border-guard { border-left: 4px solid #3498db; }
-  .title-guard { color: #5dade2; }
-
-  .border-warden { border-left: 4px solid #9b59b6; }
-  .title-warden { color: #bb8fce; }
-
-  .border-key { border-left: 4px solid #2ecc71; }
-  .title-key { color: #58d68d; }
-
-  /* 列表與標籤 */
   ul {
-    list-style: none;
+    margin: 0;
+    padding-left: 22px;
   }
   li {
-    margin-bottom: 7px;
-    padding-left: 14px;
-    position: relative;
+    margin-bottom: 6px;
   }
-  li:before {
-    content: "▪";
-    position: absolute;
-    left: 0;
-    color: #7f8c8d;
-  }
-  .sub-list {
-    margin-top: 5px;
-    margin-left: 6px;
-    padding-left: 10px;
-    border-left: 1px dashed #3b4454;
-  }
-  .sub-list li {
-    margin-bottom: 4px;
-    font-size: 13px;
-    color: #bdc3c7;
-  }
-  .hl-term {
-    color: #ffffff;
+  .punish {
+    color: #f87171;
     font-weight: bold;
   }
-  .badge-punish {
-    display: inline-block;
-    background-color: #3b1818;
-    border: 1px solid #c0392b;
-    color: #ff7675;
-    font-size: 12px;
-    padding: 1px 6px;
-    margin-left: 4px;
-  }
-  /* 常用按鍵表格 */
-  table.key-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 10px;
-  }
-  table.key-table td {
-    border: 1px solid #2a3240;
-    padding: 7px 10px;
-    background-color: #1a202c;
-  }
-  .key-cap {
-    display: inline-block;
-    background-color: #2c3545;
-    border: 1px solid #5c6b82;
-    color: #f5b041;
+  .highlight {
+    color: #fbbf24;
     font-weight: bold;
-    padding: 1px 7px;
-    font-family: Consolas, monospace;
   }
   .cmd-box {
-    background-color: #0b0e13;
-    border: 1px solid #2c3545;
-    padding: 8px 12px;
+    background-color: #0f1215;
+    border: 1px solid #2d3540;
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  code {
+    background-color: #28303b;
+    color: #4ade80;
+    padding: 2px 6px;
+    border-radius: 3px;
     font-family: Consolas, monospace;
-    font-size: 12.5px;
-    color: #a3be8c;
+  }
+  /* 稱號取得方式兩段分欄樣式 */
+  .split-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  .split-box {
+    width: 48%;
+    vertical-align: top;
+    background-color: #0f1215;
+    border: 1px solid #2d3540;
+    border-radius: 4px;
+    padding: 12px 16px;
+  }
+  .split-gap {
+    width: 4%;
+  }
+  .stat-name {
+    color: #fbbf24;
+    font-weight: bold;
   }
 </style>
 </head>
 <body>
-<div class="wrapper">
+<div class="container">
 
-  <!-- 頂部橫幅 -->
-  <div class="header-box">
+  <div class="banner">
     <img src="motd.png" alt="14 監獄主視覺橫幅">
-    <div class="server-title">14 監獄</div>
-    <div class="server-sub">伺服器規章 · 陣營守則 · 常用指令說明</div>
   </div>
+  <h1>14 監獄</h1>
+  <div class="subtitle">伺服器規章 · 陣營守則 · 常用指令說明</div>
+  <div class="motto">◆ 一個口令一個動作 ｜ 無永久指令 ◆</div>
 
-  <!-- 核心標語 -->
-  <div class="motto-bar">
-    ◆ 一個口令一個動作 ｜ 無永久指令 ◆
-  </div>
-
-  <!-- 伺服器核心禁令 -->
-  <div class="card border-ban">
-    <div class="card-header title-ban">■ 伺服器核心禁令 (Server Bans)</div>
-    <div class="card-body">
+  <h2>■ 伺服器核心禁令 (Server Bans)</h2>
+  <ul>
+    <li><strong>公正原則：</strong> 嚴禁無理由大屠殺、偏袒、親友團 等不公正行為。<span class="punish">處罰：永久封鎖</span></li>
+    <li><strong>反作弊規範：</strong> 嚴禁使用任何形式的 BUG、外掛或第三方作弊程式。<span class="punish">處罰：永久封鎖</span></li>
+    <li><strong>槍房界線機制：</strong>
       <ul>
-        <li><span class="hl-term">公正原則：</span>嚴禁無理由大屠殺、偏袒、親友團 等不公正行為。<span class="badge-punish">處罰：永久封鎖</span></li>
-        <li><span class="hl-term">反作弊規範：</span>嚴禁使用任何形式的 BUG、外掛或第三方作弊程式。<span class="badge-punish">處罰：永久封鎖</span></li>
-        <li><span class="hl-term">槍房界線機制：</span>
-          <ul class="sub-list">
-            <li><span class="hl-term">過門判定：</span>因各類地圖設計不一（如門外設有補血機等設施），槍房範圍一律以「槍房界線」為準。</li>
-            <li><span class="hl-term">免罰緩衝：</span>囚犯只要未通過槍房大門，在門外活動（如使用門外的補血機）皆不算進入槍房。</li>
-            <li><span class="hl-term">雙腳判定：</span>雙腳進入到槍房內 才算過門，單腳踏過門不算進入槍房。</li>
-          </ul>
-        </li>
+        <li><strong>過門判定：</strong> 因各類地圖設計不一（如門外設有補血機等設施），槍房範圍一律以「槍房界線」為準。</li>
+        <li><strong>免罰緩衝：</strong> 囚犯只要未通過槍房大門，在門外活動（如使用門外的補血機）皆不算進入槍房。</li>
+        <li><strong>雙腳判定：</strong> <span class="highlight">雙腳進入到槍房內</span> 才算過門，單腳踏過門不算進入槍房。</li>
       </ul>
-    </div>
-  </div>
+    </li>
+  </ul>
 
-  <!-- 囚犯規則 -->
-  <div class="card border-prisoner">
-    <div class="card-header title-prisoner">■ 囚犯規則 (Prisoners)</div>
-    <div class="card-body">
+  <h2>■ 囚犯規則 (Prisoners)</h2>
+  <ul>
+    <li><strong>通緝犯判定：</strong> 囚犯若投擲 手榴彈、煙霧彈、閃光彈、撿槍、掏出槍、進入槍房 之行為，一律視為通緝犯（此規則包含自由日玩家）。</li>
+    <li><strong>自由日規範：</strong>
       <ul>
-        <li><span class="hl-term">通緝犯判定：</span>囚犯若投擲 手榴彈、煙霧彈、閃光彈、撿槍、掏出槍、進入槍房 之行為，一律視為通緝犯（此規則包含自由日玩家）。</li>
-        <li><span class="hl-term">自由日規範：</span>
-          <ul class="sub-list">
-            <li>自由日玩家在限定時間內，可以無視任何典獄長的指令。</li>
-            <li>自由日於時間顯示 0:00 時準時結束，此後玩家變回一般囚犯。</li>
-          </ul>
-        </li>
+        <li>自由日玩家在限定時間內，可以無視任何典獄長的指令。</li>
+        <li>自由日於時間顯示 <code>0:00</code> 時準時結束，此後玩家變回一般囚犯。</li>
       </ul>
-    </div>
-  </div>
+    </li>
+  </ul>
 
-  <!-- 獄警規則 -->
-  <div class="card border-guard">
-    <div class="card-header title-guard">■ 獄警規則 (Guards)</div>
-    <div class="card-body">
+  <h2>■ 獄警規則 (Guards)</h2>
+  <ul>
+    <li><strong>硬體要求：</strong> 獄警陣營必須擁有麥克風。若無麥克風、麥克風損壞、爆音或講話不清楚者，請至囚犯陣營。<span class="punish">處罰：剔除 / 換隊</span></li>
+    <li><strong>服從命令：</strong> 獄警必須聽從典獄長命令。若不聽話，典獄長可自行將其 TK（團隊擊殺）。<span class="punish">處罰：剔除 / 處死</span></li>
+    <li><strong>牢門限制：</strong> 未得到典獄長命令前，獄警不得擅自開啟牢門。<span class="punish">處罰：剔除 / 處死</span></li>
+    <li><strong>武器管制：</strong>
       <ul>
-        <li><span class="hl-term">硬體要求：</span>獄警陣營必須擁有麥克風。若無麥克風、麥克風損壞、爆音或講話不清楚者，請至囚犯陣營。<span class="badge-punish">處罰：剔除 / 換隊</span></li>
-        <li><span class="hl-term">服從命令：</span>獄警必須聽從典獄長命令。若不聽話，典獄長可自行將其 TK（團隊擊殺）。<span class="badge-punish">處罰：剔除 / 處死</span></li>
-        <li><span class="hl-term">牢門限制：</span>未得到典獄長命令前，獄警不得擅自開啟牢門。<span class="badge-punish">處罰：剔除 / 處死</span></li>
-        <li><span class="hl-term">武器管制：</span>
-          <ul class="sub-list">
-            <li>不得隨意丟棄槍枝（除非典獄長命令）。<span class="badge-punish">處罰：剔除 / 處死</span></li>
-            <li>不得隨意投擲手榴彈、閃光彈、煙霧彈。<span class="badge-punish">處罰：剔除 / 處死</span></li>
-          </ul>
-        </li>
-        <li><span class="hl-term">自殺限制：</span>任何情況下皆不能自殺（除非典獄長允許或屬於意外身亡）。<span class="badge-punish">處罰：剔除</span></li>
-        <li><span class="hl-term">誤殺懲罰：</span>
-          <ul class="sub-list">
-            <li>不得隨意誤殺囚犯，或在無典獄長命令下殺死囚犯。<span class="badge-punish">處罰：剔除 / 處死</span></li>
-            <li><span class="hl-term">誤殺 1 人：</span>必須在下一場給予該囚犯自由日一天，此補償不得累積。<span class="badge-punish">處罰：剔除</span></li>
-            <li><span class="hl-term">誤殺 3 人（含）以上：</span>典獄長方必須在下一場給予全體囚犯自由日一天。<span class="badge-punish">處罰：剔除</span></li>
-          </ul>
-        </li>
+        <li>不得隨意丟棄槍枝（除非典獄長命令）。<span class="punish">處罰：剔除 / 處死</span></li>
+        <li>不得隨意投擲手榴彈、閃光彈、煙霧彈。<span class="punish">處罰：剔除 / 處死</span></li>
       </ul>
-    </div>
-  </div>
-
-  <!-- 典獄長 & 老大規則 -->
-  <div class="card border-warden">
-    <div class="card-header title-warden">■ 典獄長 &amp; 老大規則 (Warden &amp; Leader)</div>
-    <div class="card-body">
+    </li>
+    <li><strong>自殺限制：</strong> 任何情況下皆不能自殺（除非典獄長允許或屬於意外身亡）。<span class="punish">處罰：剔除</span></li>
+    <li><strong>誤殺懲罰：</strong>
       <ul>
-        <li><span class="hl-term">輪流機制：</span>典獄長與老大請輪流擔任，嚴禁惡意霸佔位置（除非當下沒有其他玩家想當）。<span class="badge-punish">處罰：剔除 / 處死</span></li>
-        <li><span class="hl-term">典獄長限制：</span>
-          <ul class="sub-list">
-            <li><span class="hl-term">硬體與口條：</span>必須擁有清晰的麥克風。若講話速度過快（5速嘴）導致他人聽不懂，請勿擔任。<span class="badge-punish">處罰：剔除 / 處死</span></li>
-            <li><span class="hl-term">開門時限：</span>遊戲時間 1分30秒 前必須開啟牢門。</li>
-            <li><span class="hl-term">自由日時限：</span>給予自由日（包含誤殺補償或全體自由日）必須在遊戲時間 1分30秒 前完成。<span class="badge-punish">處罰：剔除 / 處死</span></li>
-            <li><span class="hl-term">死亡特權失效：</span>當典獄長死亡時，其下達的所有指令 立即宣告無效，直到下一位典獄長上任並下達新指令。</li>
-            <li><span class="hl-term">特殊模式：</span>所有特殊模式須在 無自由日情況下，或是 自由日時間到（0:00） 才可開啟。開啟特殊遊戲時 請通知囚犯，請勿直接開啟導致囚犯沒做準備。<span class="badge-punish">處罰：剔除 / 處死</span></li>
-          </ul>
-        </li>
-        <li><span class="hl-term">囚犯老大限制：</span>
-          <ul class="sub-list">
-            <li><span class="hl-term">硬體要求：</span>必須擁有麥克風，適用於指揮囚犯進行暴動。<span class="badge-punish">處罰：剔除 / 處死</span></li>
-            <li><span class="hl-term">無自由日：</span>擔任老大者不享有自由日特權。</li>
-          </ul>
-        </li>
+        <li>不得隨意誤殺囚犯，或在無典獄長命令下殺死囚犯。<span class="punish">處罰：剔除 / 處死</span></li>
+        <li><strong>誤殺 1 人：</strong> 必須在下一場給予該囚犯自由日一天，此補償不得累積。<span class="punish">處罰：剔除</span></li>
+        <li><strong>誤殺 3 人（含）以上：</strong> 典獄長方必須在下一場給予全體囚犯自由日一天。<span class="punish">處罰：剔除</span></li>
       </ul>
-    </div>
+    </li>
+  </ul>
+
+  <h2>■ 典獄長 &amp; 老大規則 (Warden &amp; Leader)</h2>
+  <ul>
+    <li><strong>輪流機制：</strong> 典獄長與老大請輪流擔任，嚴禁惡意霸佔位置（除非當下沒有其他玩家想當）。<span class="punish">處罰：剔除 / 處死</span></li>
+    <li><strong>典獄長限制：</strong>
+      <ul>
+        <li><strong>硬體與口條：</strong> 必須擁有清晰的麥克風。若講話速度過快（5速嘴）導致他人聽不懂，請勿擔任。<span class="punish">處罰：剔除 / 處死</span></li>
+        <li><strong>開門時限：</strong> 遊戲時間 <code>1分30秒</code> 前必須開啟牢門。</li>
+        <li><strong>自由日時限：</strong> 給予自由日（包含誤殺補償或全體自由日）必須在遊戲時間 <code>1分30秒</code> 前完成。<span class="punish">處罰：剔除 / 處死</span></li>
+        <li><strong>死亡特權失效：</strong> 當典獄長死亡時，其下達的所有指令 <strong>立即宣告無效</strong>，直到下一位典獄長上任並下達新指令。</li>
+        <li><strong>特殊模式：</strong> 所有特殊模式須在 無自由日情況下，或是 自由日時間到（<code>0:00</code>） 才可開啟。開啟特殊遊戲時 請通知囚犯，請勿直接開啟導致囚犯沒做準備。<span class="punish">處罰：剔除 / 處死</span></li>
+      </ul>
+    </li>
+    <li><strong>囚犯老大限制：</strong>
+      <ul>
+        <li><strong>硬體要求：</strong> 必須擁有麥克風，適用於指揮囚犯進行暴動。<span class="punish">處罰：剔除 / 處死</span></li>
+        <li><strong>無自由日：</strong> 擔任老大者不享有自由日特權。</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>■ 常用按鍵與指令設定</h2>
+  <div class="cmd-box">
+    <p><strong>M 或 F3</strong> ：主選單 &nbsp;｜&nbsp; <strong>E 鍵</strong> ：降落傘 &nbsp;｜&nbsp; <strong>V 鍵</strong> ：尿尿</p>
+    <p>如需修改按鍵綁定（請按 <code>~</code> 開啟控制台輸入）：</p>
+    <ul>
+      <li>修改尿尿按鍵（範例改為 X 鍵）： <code>bind x +piss</code></li>
+      <li>修改主選單按鍵（範例改為 F1 鍵）： <code>bind f1 jb_menu</code></li>
+    </ul>
   </div>
 
-  <!-- 常用按鍵與指令設定 -->
-  <div class="card border-key">
-    <div class="card-header title-key">■ 常用按鍵與指令設定</div>
-    <div class="card-body">
-      <table class="key-table">
-        <tr>
-          <td width="33%"><span class="key-cap">M</span> 或 <span class="key-cap">F3</span> ：主選單</td>
-          <td width="33%"><span class="key-cap">E 鍵</span> ：降落傘</td>
-          <td width="34%"><span class="key-cap">V 鍵</span> ：尿尿</td>
-        </tr>
-      </table>
-      <div style="margin-bottom: 6px; color: #bdc3c7;">如需修改按鍵綁定（請按 <span class="key-cap">~</span> 開啟控制台輸入）：</div>
-      <div class="cmd-box">
-        • 修改尿尿按鍵（範例改為 X 鍵）： <span style="color:#ffd166;">bind x +piss</span><br>
-        • 修改主選單按鍵（範例改為 F1 鍵）： <span style="color:#ffd166;">bind f1 jb_menu</span>
-      </div>
-    </div>
-  </div>
+  <h2>■ 稱號戰績取得方式</h2>
+  <table class="split-table">
+    <tr>
+      <td class="split-box">
+        <ul>
+          <li><span class="stat-name">魔王：</span> 在魔王模式中，殺死魔王</li>
+          <li><span class="stat-name">通緝：</span> 當囚犯時殺死獄警成為通緝犯</li>
+          <li><span class="stat-name">單挑勝：</span>單挑對決獲勝</li>
+          <li><span class="stat-name">在線：</span> 加入囚犯或警衛陣營遊玩累計時數</li>
+          <li><span class="stat-name">感染：</span> 殭屍模式中.當殭屍殺死人類</li>
+        </ul>
+      </td>
+      <td class="split-gap"></td>
+      <td class="split-box">
+        <ul>
+          <li><span class="stat-name">倖存：</span> 殭屍模式中，當人類存活到模式結束</li>
+          <li><span class="stat-name">傳彈：</span> 傳炸彈模式中，成功把炸彈傳給別人</li>
+          <li><span class="stat-name">炸警：</span> 傳炸彈模式中，用炸彈炸死警衛</li>
+          <li><span class="stat-name">破冰：</span> 冰凍鬼抓人模式中，救援被凍結的隊友</li>
+          <li><span class="stat-name">尿屍：</span> 按 <code>V</code> 鍵對玩家屍體尿尿</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
 
 </div>
 </body>
